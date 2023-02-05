@@ -38,20 +38,29 @@ const tradickaIcon = new L.icon({iconUrl: 'tradicka.png',iconSize: [20, 20]}),
     webcamIcon = new L.icon({iconUrl: 'webcam.png',iconSize: [20, 20]}),
     earthIcon = new L.icon({iconUrl: 'earth.png',iconSize: [20, 20]});
 
-const tradicni = L.layerGroup(),
-    mystery = L.layerGroup(),
-    multi = L.layerGroup(),
-    letterbox = L.layerGroup(),
-    wherigo = L.layerGroup(),
-    virtual = L.layerGroup(),
-    webcam = L.layerGroup(),
-    earth = L.layerGroup();
+// const tradicni = L.layerGroup(),
+//     mystery = L.layerGroup(),
+//     multi = L.layerGroup(),
+//     letterbox = L.layerGroup(),
+//     wherigo = L.layerGroup(),
+//     virtual = L.layerGroup(),
+//     webcam = L.layerGroup(),
+//     earth = L.layerGroup();
 
 const baseLayers = {
   'Turistická': mapyCz,
   'Základní': leaflet,
   'Letecká': google,
 }
+const tradicni = L.markerClusterGroup();
+const multi = L.markerClusterGroup();
+const mystery = L.markerClusterGroup();
+const letterbox = L.markerClusterGroup();
+const wherigo = L.markerClusterGroup();
+const virtual = L.markerClusterGroup();
+const webcam = L.markerClusterGroup();
+const earth = L.markerClusterGroup();
+
 
 const overlays = {
   "<img src='tradicka.png' height=20> Tradiční": tradicni,
@@ -65,7 +74,8 @@ const overlays = {
 }
 
 
-L.control.layers(baseLayers, overlays,/*{collapsed:false}*/).addTo(mymap);
+//L.control.layers(baseLayers, overlays,/*{collapsed:false}*/).addTo(mymap);
+L.control.layers(baseLayers, overlays).addTo(mymap);
  
 /*
 var lcontrol = L.control.locate().addTo(mymap);
@@ -79,13 +89,17 @@ mymap.once('locationerror', onLocationError);
 mymap.locate({setView: true, watch: false, maxZoom: 18});
 */
 
+
+
+
 var id = 0;
 
 	for (var i=0; i < tradickaList.length; i++) {
     id = id + 1;
-	L.marker(tradickaList[i].coords, {icon: tradickaIcon}).addTo(tradicni)
+	  var marker = L.marker(tradickaList[i].coords, {icon: tradickaIcon}).addTo(tradicni)
     .bindPopup(tradickaList[i].nazev + "<br>" + tradickaList[i].GC + "<br>" + tradickaList[i].coords)
     .on("click", onClick);
+    // vrstveni.addLayer(marker);
   }
 
 for (var i=0; i < mysteryList.length; i++) {
@@ -136,6 +150,8 @@ for (var i=0; i < earthList.length; i++) {
     .bindPopup(earthList[i].nazev + "<br>" + earthList[i].GC + "<br>" + earthList[i].coords)
     .on("click", onClick);
   }
+
+  
 
 function onClick(e) {
    var popup = e.target.getPopup();
